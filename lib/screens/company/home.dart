@@ -6,11 +6,11 @@ import 'package:drivewise/screens/company/driver/add.dart';
 import 'package:drivewise/screens/company/driver/list.dart';
 import 'package:drivewise/screens/company/group/add.dart';
 import 'package:drivewise/screens/company/group/list.dart';
-import 'package:drivewise/screens/company/issue/list.dart';
 import 'package:drivewise/screens/company/maintenance/add.dart';
 import 'package:drivewise/screens/company/maintenance/list.dart';
 import 'package:drivewise/screens/company/vehicle/add.dart';
 import 'package:drivewise/screens/company/vehicle/list.dart';
+import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -36,49 +36,33 @@ class _CompanyHomeState extends State<CompanyHome> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(80),
-        child: Container(
-          decoration: BoxDecoration(
-            color: primaryColor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 60,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
-                      "Company account",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+        child: ClipPath(
+          clipper: AppBarClipPath(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: primaryColor,
+            ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Company account",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return const ListIssues();
-                            },
-                          ),
-                        );
-                      },
-                      child: const Icon(
-                        Icons.error,
-                        size: 40,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/company/home.dart';
+import 'package:drivewise/screens/driver/home.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -30,6 +31,7 @@ class _LoginState extends State<Login> {
     // } else {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
+          // builder: (context) => const DriverHome(),
           builder: (context) => const CompanyHome(),
         ),
         (route) => false);
