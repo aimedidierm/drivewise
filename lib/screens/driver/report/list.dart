@@ -2,14 +2,14 @@ import 'package:drivewise/constants.dart';
 import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 
-class AddIssue extends StatefulWidget {
-  const AddIssue({super.key});
+class ListReports extends StatefulWidget {
+  const ListReports({super.key});
 
   @override
-  State<AddIssue> createState() => _AddIssueState();
+  State<ListReports> createState() => _ListReportsState();
 }
 
-class _AddIssueState extends State<AddIssue> {
+class _ListReportsState extends State<ListReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class _AddIssueState extends State<AddIssue> {
                         ),
                       ),
                       const Text(
-                        "Create issue",
+                        "Reports",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,

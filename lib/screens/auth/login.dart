@@ -31,8 +31,8 @@ class _LoginState extends State<Login> {
     // } else {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          // builder: (context) => const DriverHome(),
-          builder: (context) => const CompanyHome(),
+          builder: (context) => const DriverHome(),
+          // builder: (context) => const CompanyHome(),
         ),
         (route) => false);
   }
@@ -78,7 +78,7 @@ class _LoginState extends State<Login> {
                       'assets/images/web.PNG',
                     ),
                     const Text(
-                      "Welcome back",
+                      "Welcome",
                       style: TextStyle(
                         fontSize: 30,
                       ),

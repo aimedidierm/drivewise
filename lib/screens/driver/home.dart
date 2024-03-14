@@ -1,4 +1,15 @@
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/screens/auth/login.dart';
+import 'package:drivewise/screens/auth/settings.dart';
+import 'package:drivewise/screens/components/appbar.dart';
+import 'package:drivewise/screens/driver/dashboard.dart';
+import 'package:drivewise/screens/driver/fuel/add.dart';
+import 'package:drivewise/screens/driver/fuel/list.dart';
+import 'package:drivewise/screens/driver/issue/add.dart';
+import 'package:drivewise/screens/driver/issue/list.dart';
+import 'package:drivewise/screens/driver/journey/add.dart';
+import 'package:drivewise/screens/driver/journey/list.dart';
+import 'package:drivewise/screens/driver/vehicle/details.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -12,23 +23,50 @@ class DriverHome extends StatefulWidget {
 class _DriverHomeState extends State<DriverHome> {
   int _selectedIndex = 0;
   static List<Widget> page = [
-    const Center(
-      child: Text('Dashboard'),
-    ),
-    const Center(
-      child: Text('Journey'),
-    ),
-    const Center(
-      child: Text('Issues'),
-    ),
-    const Center(
-      child: Text('Fuel'),
-    ),
+    const Dashboard(),
+    const ListJourneys(),
+    const ListIssues(),
+    const ListFuel(),
+    const VehicleDetails(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: ClipPath(
+          clipper: AppBarClipPath(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: primaryColor,
+            ),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 60,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Driver account",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: page[_selectedIndex],
       bottomNavigationBar: Container(
         color: primaryColor,
         child: SafeArea(
@@ -49,20 +87,20 @@ class _DriverHomeState extends State<DriverHome> {
                   text: 'Dashboard',
                 ),
                 GButton(
-                  icon: Icons.group,
-                  text: 'Drivers',
+                  icon: Icons.route,
+                  text: 'Journeys',
                 ),
                 GButton(
-                  icon: Icons.group_work,
-                  text: 'Group',
+                  icon: Icons.error,
+                  text: 'Issues',
                 ),
                 GButton(
-                  icon: Icons.drive_eta_outlined,
-                  text: 'Vehicles',
+                  icon: Icons.local_gas_station,
+                  text: 'Fuel',
                 ),
                 GButton(
-                  icon: Icons.car_repair_sharp,
-                  text: 'Maintenance',
+                  icon: Icons.drive_eta,
+                  text: 'Vehicle',
                 ),
               ],
               selectedIndex: _selectedIndex,
@@ -73,6 +111,52 @@ class _DriverHomeState extends State<DriverHome> {
               },
             ),
           ),
+        ),
+      ),
+      floatingActionButton: Visibility(
+        child: FloatingActionButton(
+          onPressed: () {
+            if (_selectedIndex == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Settings()),
+              );
+            } else if (_selectedIndex == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddJourney()),
+              );
+            } else if (_selectedIndex == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddIssue()),
+              );
+            } else if (_selectedIndex == 3) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddFuel()),
+              );
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const Login()),
+              );
+            }
+          },
+          child: (_selectedIndex == 0)
+              ? Icon(
+                  Icons.manage_accounts,
+                  color: primaryColor,
+                )
+              : (_selectedIndex == 4)
+                  ? Icon(
+                      Icons.logout,
+                      color: primaryColor,
+                    )
+                  : Icon(
+                      Icons.add,
+                      color: primaryColor,
+                    ),
         ),
       ),
     );
