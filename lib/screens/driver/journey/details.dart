@@ -1,15 +1,15 @@
+import 'package:flutter/material.dart';
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/screens/components/appbar.dart';
-import 'package:flutter/material.dart';
 
-class IssueDetails extends StatefulWidget {
-  const IssueDetails({super.key});
+class JourneyDetails extends StatefulWidget {
+  const JourneyDetails({Key? key}) : super(key: key);
 
   @override
-  State<IssueDetails> createState() => _IssueDetailsState();
+  State<JourneyDetails> createState() => _JourneyDetailsState();
 }
 
-class _IssueDetailsState extends State<IssueDetails> {
+class _JourneyDetailsState extends State<JourneyDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class _IssueDetailsState extends State<IssueDetails> {
                         ),
                       ),
                       const Text(
-                        "Issue Details",
+                        "Journey details",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -63,15 +63,24 @@ class _IssueDetailsState extends State<IssueDetails> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
           children: [
-            const Text(
-              'Accident',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'From: Kigali',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'To: Huye',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             const SizedBox(
               height: 20,
             ),
             Text(
-              'Emergency',
+              '133 KM',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -81,30 +90,10 @@ class _IssueDetailsState extends State<IssueDetails> {
             const SizedBox(
               height: 20,
             ),
-            const Flexible(
-              child: Text(
-                "Explore our diverse range of vehicles designed to meet your every need. From sleek and stylish sports cars to rugged and dependable trucks, we have something for every driver. Our selection includes fuel-efficient hybrids, spacious SUVs, and nimble compact cars. Whether you're commuting to work or heading off-road for adventure, our vehicles are built to deliver performance, comfort, and reliability.",
-                textAlign: TextAlign.justify,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Row(
-              children: [
-                Text(
-                  'Vehicle: ',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Text(
-                  'RAA 000 A',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
+            // Image.asset(
+            // 'assets/images/map2.png',
+            // height: 600,
+            // )
           ],
         ),
       ),

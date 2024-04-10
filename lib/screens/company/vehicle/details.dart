@@ -156,7 +156,7 @@ class _VehicleDetailsState extends State<VehicleDetails> {
             Row(
               children: [
                 Text(
-                  'Fuel (L/KM): ',
+                  'Fuel (KM/L): ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(

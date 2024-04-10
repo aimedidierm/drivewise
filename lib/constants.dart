@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 //Endpoints
-const baseURL = 'http://localhost/api';
-const loginURL = '$baseURL/auth/login';
+const baseURL = 'https://drive.aimedidierm.xyz/api';
+const loginURL = '$baseURL/login';
+const settingsURL = '$baseURL/settings';
 
 //Errors
 const serverError = 'Internel server error';

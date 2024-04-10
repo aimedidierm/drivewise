@@ -1,8 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/models/api_response.dart';
+import 'package:drivewise/models/user.dart';
 import 'package:drivewise/screens/company/home.dart';
 import 'package:drivewise/screens/driver/home.dart';
+import 'package:drivewise/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,40 +22,42 @@ class _LoginState extends State<Login> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  void loginUser() async {
-    // ApiResponse response = await login(email.text, password.text);
-    // if (response.error == null) {
-    // _saveAndRedirect(response.data as User);
-    // User user = response.data as User;
-    // if (user.role == "admin") {
-    //   Navigator.of(context).pushAndRemoveUntil(
-    //       MaterialPageRoute(
-    //         builder: (context) => const AdminHome(),
-    //       ),
-    //       (route) => false);
-    // } else {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => const DriverHome(),
-          // builder: (context) => const CompanyHome(),
-        ),
-        (route) => false);
+  void _saveAndRedirect(User user) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.setString('token', user.token ?? '');
+    await pref.setString('type', user.type ?? '');
+    await pref.setInt('userId', (user.id ?? 0));
   }
 
-  // } else {
-  //   ScaffoldMessenger.of(context).showSnackBar(
-  //     SnackBar(
-  //       content: Text('${response.error}'),
-  //     ),
-  //   );
-  // }
-
-  //   void _saveAndRedirect(User user) async {
-  //   SharedPreferences pref = await SharedPreferences.getInstance();
-  //   await pref.setString('token', user.token ?? '');
-  //   await pref.setInt('userId', (user.id ?? 0));
-  // }
-// }
+  void loginUser() async {
+    ApiResponse response = await login(email.text, password.text);
+    if (response.error == null) {
+      _saveAndRedirect(response.data as User);
+      User user = response.data as User;
+      if (user.type == "admin") {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const CompanyHome(),
+            ),
+            (route) => false);
+      } else {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const DriverHome(),
+            ),
+            (route) => false);
+      }
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${response.error}'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +106,16 @@ class _LoginState extends State<Login> {
                       children: [
                         TextFormField(
                           controller: email,
-                          validator: (val) =>
-                              val!.isEmpty ? 'Email is required' : null,
+                          validator: (val) {
+                            if (val!.isEmpty) {
+                              return 'Email is required';
+                            } else if (!RegExp(
+                                    r"^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
+                                .hasMatch(val)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
                           decoration: InputDecoration(
                             labelText: 'Enter Email',
                             contentPadding: const EdgeInsets.all(8.0),

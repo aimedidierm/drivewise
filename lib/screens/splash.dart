@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:drivewise/constants.dart';
-import 'package:drivewise/screens/auth/login.dart';
 import 'package:drivewise/screens/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -19,8 +18,7 @@ class _SplashState extends State<Splash> {
       const Duration(seconds: 3),
       () => Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          // builder: (context) => const Loading(),
-          builder: (context) => const Login(),
+          builder: (context) => const Loading(),
         ),
         (route) => false,
       ),

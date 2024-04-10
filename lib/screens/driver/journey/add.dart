@@ -10,6 +10,10 @@ class AddJourney extends StatefulWidget {
 }
 
 class _AddJourneyState extends State<AddJourney> {
+  bool _loading = false;
+  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+  TextEditingController location = TextEditingController();
+  TextEditingController destination = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +62,88 @@ class _AddJourneyState extends State<AddJourney> {
             ),
           ),
         ),
+      ),
+      body: ListView(
+        children: [
+          const SizedBox(
+            height: 40,
+          ),
+          Form(
+            // key: formkey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                children: [
+                  TextFormField(
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'Location is required';
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: location,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter Location',
+                      labelText: 'Location',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'Destination is required';
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: destination,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter destination',
+                      labelText: 'Destination',
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  TextButton(
+                    onPressed: () {
+                      if (formkey.currentState!.validate()) {
+                        setState(
+                          () {
+                            _loading = true;
+                          },
+                        );
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                        (states) => primaryColor,
+                      ),
+                      padding: MaterialStateProperty.resolveWith(
+                        (states) => const EdgeInsets.symmetric(vertical: 20),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: (_loading)
+                          ? const CircularProgressIndicator(
+                              color: Colors.white,
+                            )
+                          : const Text(
+                              'Register',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
