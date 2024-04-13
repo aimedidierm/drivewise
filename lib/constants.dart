@@ -5,6 +5,13 @@ const baseURL = 'https://drive.aimedidierm.xyz/api';
 const loginURL = '$baseURL/login';
 const settingsURL = '$baseURL/settings';
 
+const adminRoute = '$baseURL/admin';
+const adminPricesURL = '$adminRoute/prices';
+const adminFuelURL = '$adminRoute/fuel';
+const adminIssuesURL = '$adminRoute/issues';
+const adminDriversURL = '$adminRoute/driver';
+const adminGroupsURL = '$adminRoute/group';
+
 //Errors
 const serverError = 'Internel server error';
 const unauthorized = 'Unauthorized';

@@ -3,7 +3,15 @@ import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 
 class DriverDetails extends StatefulWidget {
-  const DriverDetails({super.key});
+  final String name, email, phone, vehicle, group;
+  const DriverDetails({
+    Key? key,
+    required this.name,
+    required this.email,
+    required this.phone,
+    required this.vehicle,
+    required this.group,
+  }) : super(key: key);
 
   @override
   State<DriverDetails> createState() => _DriverDetailsState();
@@ -62,88 +70,88 @@ class _DriverDetailsState extends State<DriverDetails> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
-          children: const [
+          children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'Name: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Driver names',
-                  style: TextStyle(
+                  widget.name,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Email: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'driver@gmail.com',
-                  style: TextStyle(
+                  widget.email,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Phone: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  '0788750079',
-                  style: TextStyle(
+                  widget.phone,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Vehicle plate: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'RAA 000 A',
-                  style: TextStyle(
+                  widget.vehicle,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Vehicle group: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Group 1',
-                  style: TextStyle(
+                  widget.group,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),

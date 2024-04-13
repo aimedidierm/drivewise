@@ -1,9 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/auth/login.dart';
 import 'package:drivewise/screens/components/appbar.dart';
 import 'package:drivewise/services/auth.dart';
+import 'package:drivewise/services/user.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,6 +27,7 @@ class _SettingsState extends State<Settings> {
   TextEditingController password = TextEditingController();
 
   bool loadingData = true;
+  bool loadingButton = false;
 
   Future<void> fetchData() async {
     String token = await getToken();
@@ -47,6 +52,28 @@ class _SettingsState extends State<Settings> {
       }
     } else {
       // print('Request failed with status: ${response.statusCode}.');
+    }
+  }
+
+  void updateUser() async {
+    ApiResponse response = await updateDetails(
+      name.text,
+      email.text,
+      phone.text,
+      password.text,
+    );
+    if (response.error == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('details updated!'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${response.error}'),
+        ),
+      );
     }
   }
 
@@ -262,7 +289,10 @@ class _SettingsState extends State<Settings> {
                                   TextButton(
                                     onPressed: () {
                                       if (formkey.currentState!.validate()) {
-                                        // updateUser();
+                                        setState(() {
+                                          loadingButton = true;
+                                        });
+                                        updateUser();
                                       }
                                     },
                                     style: ButtonStyle(
@@ -276,16 +306,20 @@ class _SettingsState extends State<Settings> {
                                             vertical: 10),
                                       ),
                                     ),
-                                    child: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 40),
-                                      child: Text(
-                                        'Update details',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 40),
+                                      child: loadingButton
+                                          ? const CircularProgressIndicator(
+                                              color: Colors.white,
+                                            )
+                                          : const Text(
+                                              'Update details',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                     ),
                                   ),
                                 ],

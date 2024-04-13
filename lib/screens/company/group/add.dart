@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/components/appbar.dart';
+import 'package:drivewise/services/group.dart';
 import 'package:flutter/material.dart';
 
 class AddGroup extends StatefulWidget {
@@ -14,6 +18,32 @@ class _AddGroupState extends State<AddGroup> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController description = TextEditingController();
+
+  void registerGroup() async {
+    ApiResponse response = await register(
+      name.text,
+      description.text,
+    );
+    if (response.error == null) {
+      setState(() {
+        name.text = '';
+        description.text = '';
+        _loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Group registered'),
+        ),
+      );
+    } else {
+      _loading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${response.error}'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +148,7 @@ class _AddGroupState extends State<AddGroup> {
                         setState(() {
                           _loading = true;
                         });
-                        // registerGroup();
+                        registerGroup();
                       }
                     },
                     style: ButtonStyle(

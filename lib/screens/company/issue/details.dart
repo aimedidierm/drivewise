@@ -3,7 +3,16 @@ import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 
 class IssueDetails extends StatefulWidget {
-  const IssueDetails({super.key});
+  final String title, status, description, driver, contact, vehicle;
+  const IssueDetails({
+    Key? key,
+    required this.title,
+    required this.status,
+    required this.description,
+    required this.driver,
+    required this.contact,
+    required this.vehicle,
+  }) : super(key: key);
 
   @override
   State<IssueDetails> createState() => _IssueDetailsState();
@@ -63,15 +72,15 @@ class _IssueDetailsState extends State<IssueDetails> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
           children: [
-            const Text(
-              'Accident',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              widget.title,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 20,
             ),
             Text(
-              'Emergency',
+              widget.status,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -81,24 +90,24 @@ class _IssueDetailsState extends State<IssueDetails> {
             const SizedBox(
               height: 20,
             ),
-            const Flexible(
+            Flexible(
               child: Text(
-                "Explore our diverse range of vehicles designed to meet your every need. From sleek and stylish sports cars to rugged and dependable trucks, we have something for every driver. Our selection includes fuel-efficient hybrids, spacious SUVs, and nimble compact cars. Whether you're commuting to work or heading off-road for adventure, our vehicles are built to deliver performance, comfort, and reliability.",
+                widget.description,
                 textAlign: TextAlign.justify,
               ),
             ),
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   'Vehicle: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'RAA 000 A',
-                  style: TextStyle(
+                  widget.vehicle,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
@@ -108,15 +117,15 @@ class _IssueDetailsState extends State<IssueDetails> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   'Driver: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Driver name',
-                  style: TextStyle(
+                  widget.driver,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
@@ -126,15 +135,15 @@ class _IssueDetailsState extends State<IssueDetails> {
             const SizedBox(
               height: 20,
             ),
-            const Row(
+            Row(
               children: [
-                Text(
+                const Text(
                   'Driver contact: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  '0788750979',
-                  style: TextStyle(
+                  widget.contact,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),

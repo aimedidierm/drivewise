@@ -3,7 +3,12 @@ import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 
 class GroupDetails extends StatefulWidget {
-  const GroupDetails({super.key});
+  final String name, description;
+  const GroupDetails({
+    Key? key,
+    required this.name,
+    required this.description,
+  }) : super(key: key);
 
   @override
   State<GroupDetails> createState() => _GroupDetailsState();
@@ -62,20 +67,20 @@ class _GroupDetailsState extends State<GroupDetails> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
-          children: const [
+          children: [
             Text(
-              'Group names',
-              style: TextStyle(
+              widget.name,
+              style: const TextStyle(
                 fontSize: 20,
                 // color: Colors.grey,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Flexible(
               child: Text(
-                "Explore our diverse range of vehicles designed to meet your every need. From sleek and stylish sports cars to rugged and dependable trucks, we have something for every driver. Our selection includes fuel-efficient hybrids, spacious SUVs, and nimble compact cars. Whether you're commuting to work or heading off-road for adventure, our vehicles are built to deliver performance, comfort, and reliability.",
+                widget.description,
                 textAlign: TextAlign.justify,
               ),
             ),

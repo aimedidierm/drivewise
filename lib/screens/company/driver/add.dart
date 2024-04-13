@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/components/appbar.dart';
+import 'package:drivewise/services/driver.dart';
 import 'package:flutter/material.dart';
 
 class AddDriver extends StatefulWidget {
@@ -15,6 +19,32 @@ class _AddDriverState extends State<AddDriver> {
   TextEditingController name = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController email = TextEditingController();
+
+  void registerDriver() async {
+    ApiResponse response = await register(
+      name.text,
+      email.text,
+      phone.text,
+    );
+    if (response.error == null) {
+      setState(() {
+        name.text = '';
+        phone.text = '';
+        email.text = '';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Driver registered'),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${response.error}'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +163,7 @@ class _AddDriverState extends State<AddDriver> {
                         setState(() {
                           _loading = true;
                         });
-                        // registerDriver();
+                        registerDriver();
                       }
                     },
                     style: ButtonStyle(
