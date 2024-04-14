@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/screens/driver/issue/details.dart';
+import 'package:drivewise/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ListIssues extends StatefulWidget {
   const ListIssues({super.key});
@@ -13,13 +16,38 @@ class ListIssues extends StatefulWidget {
 
 class _ListIssuesState extends State<ListIssues> {
   bool _loading = true;
-  @override
-  Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
+
+  List<Map<String, dynamic>> _allIssues = [];
+
+  Future<void> fetchData() async {
+    String token = await getToken();
+    final response = await http.get(Uri.parse(driverIssuesURL), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
+
+    if (response.statusCode == 200) {
+      final decodedResponse = json.decode(response.body);
+      final List<dynamic> decodedIssues = decodedResponse['issues'];
+      final List<Map<String, dynamic>> issues =
+          List<Map<String, dynamic>>.from(decodedIssues);
       setState(() {
+        _allIssues = issues;
         _loading = false;
       });
-    });
+    } else {
+      // print('Request failed with status: ${response.statusCode}.');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -33,19 +61,19 @@ class _ListIssuesState extends State<ListIssues> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 20,
+                      itemCount: _allIssues.length,
                       itemBuilder: (context, index) => Card(
                         key: ValueKey(index),
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: Column(
                           children: [
                             ListTile(
-                              title: const Text(
-                                "Accident ",
+                              title: Text(
+                                _allIssues[index]['title'],
                                 textAlign: TextAlign.justify,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -54,7 +82,18 @@ class _ListIssuesState extends State<ListIssues> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return const IssueDetails();
+                                      return IssueDetails(
+                                        title: _allIssues[index]['title'],
+                                        status: _allIssues[index]['status'],
+                                        description: _allIssues[index]
+                                            ['description'],
+                                        vehicle: _allIssues[index]['user']
+                                            ['vehicle']['plate'],
+                                        driver: _allIssues[index]['user']
+                                            ['name'],
+                                        contact: _allIssues[index]['user']
+                                            ['phone'],
+                                      );
                                     },
                                   ),
                                 );
@@ -63,7 +102,7 @@ class _ListIssuesState extends State<ListIssues> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Emergency",
+                                    _allIssues[index]['status'],
                                     textAlign: TextAlign.justify,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -72,11 +111,11 @@ class _ListIssuesState extends State<ListIssues> {
                                       color: primaryColor,
                                     ),
                                   ),
-                                  const Row(
+                                  Row(
                                     children: [
                                       Flexible(
                                         child: Text(
-                                          "Explore our diverse range of vehicles designed to meet your every need. From sleek and stylish sports cars to rugged and dependable trucks, we have something for every driver. Our selection includes fuel-efficient hybrids, spacious SUVs, and nimble compact cars. Whether you're commuting to work or heading off-road for adventure, our vehicles are built to deliver performance, comfort, and reliability.",
+                                          _allIssues[index]['description'],
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 2,
                                         ),

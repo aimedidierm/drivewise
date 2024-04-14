@@ -1,7 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+import 'package:http/http.dart' as http;
 
 class ListFuel extends StatefulWidget {
   const ListFuel({super.key});
@@ -12,13 +17,46 @@ class ListFuel extends StatefulWidget {
 
 class _ListFuelState extends State<ListFuel> {
   bool _loading = true;
-  @override
-  Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
+
+  List<Map<String, dynamic>> _fuels = [];
+
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+
+    String formattedDate = DateFormat('yyyy-MM-dd').format(dateTime);
+
+    return formattedDate;
+  }
+
+  Future<void> fetchData() async {
+    String token = await getToken();
+    final response = await http.get(Uri.parse(driverFuelURL), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
+
+    if (response.statusCode == 200) {
+      final decodedResponse = json.decode(response.body);
+      final List<dynamic> decodedFuels = decodedResponse['fuels'];
+      final List<Map<String, dynamic>> fuels =
+          List<Map<String, dynamic>>.from(decodedFuels);
       setState(() {
+        _fuels = fuels;
         _loading = false;
       });
-    });
+    } else {
+      // print('Request failed with status: ${response.statusCode}.');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: _loading
@@ -31,19 +69,19 @@ class _ListFuelState extends State<ListFuel> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 20,
+                      itemCount: _fuels.length,
                       itemBuilder: (context, index) => Card(
                         key: ValueKey(index),
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: Column(
                           children: [
                             ListTile(
-                              title: const Row(
+                              title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "12/03/2024",
+                                    formatDate(_fuels[index]['created_at']),
                                     textAlign: TextAlign.justify,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -51,17 +89,18 @@ class _ListFuelState extends State<ListFuel> {
                                 ],
                               ),
                               contentPadding: const EdgeInsets.all(16),
-                              // onTap: () {},
                               subtitle: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Column(
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('Price: 4,000Rwf'),
-                                      Text('Volume: 1.7L'),
+                                      Text(
+                                          'Price: ${_fuels[index]['total']}Rwf'),
+                                      Text(
+                                          'Volume: ${_fuels[index]['volume']}L'),
                                     ],
                                   ),
                                   Container(
@@ -75,7 +114,8 @@ class _ListFuelState extends State<ListFuel> {
                                         vertical: 5,
                                       ),
                                       child: Text(
-                                        'RAA 000 A',
+                                        _fuels[index]['user']['vehicle']
+                                            ['plate'],
                                         style: TextStyle(color: primaryColor),
                                       ),
                                     ),

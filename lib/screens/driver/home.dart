@@ -10,6 +10,7 @@ import 'package:drivewise/screens/driver/issue/list.dart';
 import 'package:drivewise/screens/driver/journey/add.dart';
 import 'package:drivewise/screens/driver/journey/list.dart';
 import 'package:drivewise/screens/driver/vehicle/details.dart';
+import 'package:drivewise/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -137,9 +138,13 @@ class _DriverHomeState extends State<DriverHome> {
                 MaterialPageRoute(builder: (context) => const AddFuel()),
               );
             } else {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Login()),
+              logout().then(
+                (value) => {
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const Login()),
+                    (route) => false,
+                  ),
+                },
               );
             }
           },

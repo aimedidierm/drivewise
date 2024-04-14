@@ -14,6 +14,13 @@ const adminGroupsURL = '$adminRoute/group';
 const adminVehiclesURL = '$adminRoute/vehicle';
 const adminMaintenancesURL = '$adminRoute/maintenance';
 
+const driverRoute = '$baseURL/driver';
+const driverPricesURL = '$driverRoute/prices';
+const driverJourneysURL = '$driverRoute/journey';
+const driverIssuesURL = '$driverRoute/issues';
+const driverFuelURL = '$driverRoute/fuel';
+const drivervehicleURL = '$driverRoute/vehicle';
+
 //Errors
 const serverError = 'Internel server error';
 const unauthorized = 'Unauthorized';

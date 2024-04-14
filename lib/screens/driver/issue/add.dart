@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/components/appbar.dart';
+import 'package:drivewise/services/issue.dart';
 import 'package:flutter/material.dart';
 
-enum status { Easy, Emergency }
+enum Status { accident, other }
 
 class AddIssue extends StatefulWidget {
   const AddIssue({super.key});
@@ -18,7 +22,44 @@ class _AddIssueState extends State<AddIssue> {
   TextEditingController title = TextEditingController();
   TextEditingController description = TextEditingController();
 
-  status? _selectedStatus;
+  Status? _selectedStatus;
+
+  String getEnumValue(Status? enumValue) {
+    if (enumValue != null) {
+      return enumValue.toString().split('.').last;
+    }
+    return '';
+  }
+
+  void registerIssue() async {
+    ApiResponse response = await register(
+      title.text,
+      description.text,
+      getEnumValue(_selectedStatus),
+    );
+    if (response.error == null) {
+      setState(() {
+        _loading = false;
+        title.text = '';
+        description.text = '';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Issue created'),
+        ),
+      );
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${response.error}'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +155,7 @@ class _AddIssueState extends State<AddIssue> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  DropdownButtonFormField<status>(
+                  DropdownButtonFormField<Status>(
                     value: _selectedStatus,
                     validator: (val) {
                       if (val == null) {
@@ -128,8 +169,8 @@ class _AddIssueState extends State<AddIssue> {
                         _selectedStatus = val;
                       });
                     },
-                    items: status.values.map((type) {
-                      return DropdownMenuItem<status>(
+                    items: Status.values.map((type) {
+                      return DropdownMenuItem<Status>(
                         value: type,
                         child: Text(type.toString().split('.').last),
                       );
@@ -148,6 +189,7 @@ class _AddIssueState extends State<AddIssue> {
                             _loading = true;
                           },
                         );
+                        registerIssue();
                       }
                     },
                     style: ButtonStyle(

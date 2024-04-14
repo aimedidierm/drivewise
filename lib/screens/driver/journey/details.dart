@@ -3,7 +3,13 @@ import 'package:drivewise/constants.dart';
 import 'package:drivewise/screens/components/appbar.dart';
 
 class JourneyDetails extends StatefulWidget {
-  const JourneyDetails({Key? key}) : super(key: key);
+  final String location, destination, distance;
+  const JourneyDetails({
+    Key? key,
+    required this.location,
+    required this.destination,
+    required this.distance,
+  }) : super(key: key);
 
   @override
   State<JourneyDetails> createState() => _JourneyDetailsState();
@@ -63,16 +69,18 @@ class _JourneyDetailsState extends State<JourneyDetails> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'From: Kigali',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  'From: ${widget.location}',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'To: Huye',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  'To: ${widget.destination}',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -80,7 +88,7 @@ class _JourneyDetailsState extends State<JourneyDetails> {
               height: 20,
             ),
             Text(
-              '133 KM',
+              '${widget.distance} KM',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

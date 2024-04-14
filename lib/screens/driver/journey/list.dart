@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/screens/driver/journey/details.dart';
+import 'package:drivewise/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class ListJourneys extends StatefulWidget {
   const ListJourneys({super.key});
@@ -13,13 +16,38 @@ class ListJourneys extends StatefulWidget {
 
 class _ListJourneysState extends State<ListJourneys> {
   bool _loading = true;
-  @override
-  Widget build(BuildContext context) {
-    Timer(const Duration(seconds: 2), () {
+
+  List<Map<String, dynamic>> _allJourneys = [];
+
+  Future<void> fetchData() async {
+    String token = await getToken();
+    final response = await http.get(Uri.parse(driverJourneysURL), headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    });
+
+    if (response.statusCode == 200) {
+      final decodedResponse = json.decode(response.body);
+      final List<dynamic> decodedJourneys = decodedResponse['journeys'];
+      final List<Map<String, dynamic>> journeys =
+          List<Map<String, dynamic>>.from(decodedJourneys);
       setState(() {
+        _allJourneys = journeys;
         _loading = false;
       });
-    });
+    } else {
+      // print('Request failed with status: ${response.statusCode}.');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: _loading
@@ -32,25 +60,25 @@ class _ListJourneysState extends State<ListJourneys> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 20,
+                      itemCount: _allJourneys.length,
                       itemBuilder: (context, index) => Card(
                         key: ValueKey(index),
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: Column(
                           children: [
                             ListTile(
-                              title: const Row(
+                              title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "From: Kigali",
+                                    "From: ${_allJourneys[index]['location']}",
                                     textAlign: TextAlign.justify,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    "To: Karongi",
+                                    "To: ${_allJourneys[index]['destination']}",
                                     textAlign: TextAlign.justify,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
@@ -62,7 +90,14 @@ class _ListJourneysState extends State<ListJourneys> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (BuildContext context) {
-                                      return const JourneyDetails();
+                                      return JourneyDetails(
+                                        location: _allJourneys[index]
+                                            ['location'],
+                                        destination: _allJourneys[index]
+                                            ['destination'],
+                                        distance: _allJourneys[index]
+                                            ['distance'],
+                                      );
                                     },
                                   ),
                                 );
@@ -71,15 +106,17 @@ class _ListJourneysState extends State<ListJourneys> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Column(
+                                  Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('Distance: 4KM'),
-                                      Text('Vehicle: RAA 000 A'),
+                                      Text(
+                                          'Distance: ${_allJourneys[index]['distance']}KM'),
+                                      Text(
+                                          'Vehicle: ${_allJourneys[index]['vehicle']['plate']}'),
                                     ],
                                   ),
-                                  (index % 2 == 0)
+                                  (_allJourneys[index]['status'] == 'pending')
                                       ? Container(
                                           decoration: BoxDecoration(
                                             color:

@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:drivewise/constants.dart';
+import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/components/appbar.dart';
+import 'package:drivewise/services/journey.dart';
 import 'package:flutter/material.dart';
 
 class AddJourney extends StatefulWidget {
@@ -14,6 +18,38 @@ class _AddJourneyState extends State<AddJourney> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController location = TextEditingController();
   TextEditingController destination = TextEditingController();
+  TextEditingController load = TextEditingController();
+
+  void registerJourney() async {
+    ApiResponse response = await register(
+      location.text,
+      load.text,
+      destination.text,
+    );
+    if (response.error == null) {
+      setState(() {
+        _loading = false;
+        location.text = '';
+        destination.text = '';
+        load.text = '';
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Journey created'),
+        ),
+      );
+    } else {
+      setState(() {
+        _loading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${response.error}'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +105,7 @@ class _AddJourneyState extends State<AddJourney> {
             height: 40,
           ),
           Form(
-            // key: formkey,
+            key: formkey,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
@@ -106,14 +142,28 @@ class _AddJourneyState extends State<AddJourney> {
                     ),
                   ),
                   const SizedBox(height: 40),
+                  TextFormField(
+                    validator: (val) {
+                      if (val!.isEmpty) {
+                        return 'Load is required';
+                      } else {
+                        return null;
+                      }
+                    },
+                    controller: load,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter load',
+                      labelText: 'Load',
+                    ),
+                  ),
+                  const SizedBox(height: 40),
                   TextButton(
                     onPressed: () {
                       if (formkey.currentState!.validate()) {
-                        setState(
-                          () {
-                            _loading = true;
-                          },
-                        );
+                        setState(() {
+                          _loading = true;
+                        });
+                        registerJourney();
                       }
                     },
                     style: ButtonStyle(
