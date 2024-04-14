@@ -28,6 +28,7 @@ class _AddDriverState extends State<AddDriver> {
     );
     if (response.error == null) {
       setState(() {
+        _loading = false;
         name.text = '';
         phone.text = '';
         email.text = '';
@@ -38,6 +39,9 @@ class _AddDriverState extends State<AddDriver> {
         ),
       );
     } else {
+      setState(() {
+        _loading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${response.error}'),

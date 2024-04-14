@@ -36,7 +36,9 @@ class _AddGroupState extends State<AddGroup> {
         ),
       );
     } else {
-      _loading = false;
+      setState(() {
+        _loading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('${response.error}'),

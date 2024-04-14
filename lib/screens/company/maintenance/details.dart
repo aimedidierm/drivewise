@@ -3,7 +3,15 @@ import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 
 class MaintenanceDetails extends StatefulWidget {
-  const MaintenanceDetails({super.key});
+  final String name, description, unit, interval, vehicle;
+  const MaintenanceDetails({
+    Key? key,
+    required this.name,
+    required this.description,
+    required this.unit,
+    required this.interval,
+    required this.vehicle,
+  }) : super(key: key);
 
   @override
   State<MaintenanceDetails> createState() => _MaintenanceDetailsState();
@@ -62,67 +70,67 @@ class _MaintenanceDetailsState extends State<MaintenanceDetails> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
-          children: const [
+          children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'Title: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Oil changing',
-                  style: TextStyle(
+                  widget.name,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
-            Text(
+            const Text(
               'Notification: ',
               style: TextStyle(fontSize: 20),
             ),
             Text(
-              "Attention vehicle owners! It's time to give your car some TLC. Don't forget to schedule your oil change appointment. Keeping your oil fresh is crucial for maintaining your vehicle's performance and longevity. Book now to ensure smooth rides ahead. Remember, regular oil changes are essential for keeping your engine running smoothly and avoiding costly repairs down the road. Don't delay, schedule your appointment today!",
+              widget.description,
               textAlign: TextAlign.justify,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Period: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  '1 month',
-                  style: TextStyle(
+                  'Every ${widget.interval} ${widget.unit}',
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Vehicle: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'RAA 000 A',
-                  style: TextStyle(
+                  widget.vehicle,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),

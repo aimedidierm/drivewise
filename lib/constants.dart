@@ -11,6 +11,8 @@ const adminFuelURL = '$adminRoute/fuel';
 const adminIssuesURL = '$adminRoute/issues';
 const adminDriversURL = '$adminRoute/driver';
 const adminGroupsURL = '$adminRoute/group';
+const adminVehiclesURL = '$adminRoute/vehicle';
+const adminMaintenancesURL = '$adminRoute/maintenance';
 
 //Errors
 const serverError = 'Internel server error';

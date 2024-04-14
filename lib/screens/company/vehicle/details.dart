@@ -3,7 +3,17 @@ import 'package:drivewise/screens/components/appbar.dart';
 import 'package:flutter/material.dart';
 
 class VehicleDetails extends StatefulWidget {
-  const VehicleDetails({super.key});
+  final String name, vehicle, group, load, type, fuel, driver;
+  const VehicleDetails({
+    Key? key,
+    required this.name,
+    required this.vehicle,
+    required this.group,
+    required this.load,
+    required this.type,
+    required this.fuel,
+    required this.driver,
+  }) : super(key: key);
 
   @override
   State<VehicleDetails> createState() => _VehicleDetailsState();
@@ -62,132 +72,129 @@ class _VehicleDetailsState extends State<VehicleDetails> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: ListView(
-          children: const [
+          children: [
             Row(
               children: [
-                Text(
+                const Text(
                   'Name: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Vehicle names',
-                  style: TextStyle(
+                  widget.name,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Vehicle plate: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'RAA 000 A',
-                  style: TextStyle(
+                  widget.vehicle,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Vehicle group: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Group 1',
-                  style: TextStyle(
+                  widget.group,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Max load: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  '1000KG',
-                  style: TextStyle(
+                  '${widget.load}KG',
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Fuel type: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Diesel',
-                  style: TextStyle(
+                  widget.type,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Fuel (KM/L): ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  '1.3',
-                  style: TextStyle(
+                  widget.fuel,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                Text(
+                const Text(
                   'Driver: ',
                   style: TextStyle(fontSize: 20),
                 ),
                 Text(
-                  'Driver names',
-                  style: TextStyle(
+                  widget.driver,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.grey,
                   ),
                 ),
               ],
-            ),
-            SizedBox(
-              height: 20,
             ),
           ],
         ),
