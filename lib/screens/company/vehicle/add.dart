@@ -88,8 +88,8 @@ class _AddVehicleState extends State<AddVehicle> {
       load.text,
       fuel.text,
       getEnumValue(_selectedFuel),
-      _selectedDriverId.toString(),
       _selectedGroupId.toString(),
+      _selectedDriverId.toString(),
     );
     if (response.error == null) {
       setState(() {

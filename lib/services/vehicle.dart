@@ -27,7 +27,7 @@ Future<ApiResponse> register(
       'fuel': fuel,
       'fuel_type': fuelType,
       'group_id': groupId,
-      // 'user_id': userId
+      'user_id': userId
     });
     switch (response.statusCode) {
       case 200:
