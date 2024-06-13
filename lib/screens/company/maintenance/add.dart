@@ -10,8 +10,6 @@ import 'package:drivewise/services/maintenance.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-enum Unit { minute, hour, day, week, month }
-
 class AddMaintenance extends StatefulWidget {
   const AddMaintenance({super.key});
 
@@ -27,25 +25,19 @@ class _AddMaintenanceState extends State<AddMaintenance> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
   TextEditingController notification = TextEditingController();
-  TextEditingController period = TextEditingController();
-
-  Unit? _selectedUnit;
+  TextEditingController date1 = TextEditingController();
+  TextEditingController date2 = TextEditingController();
+  TextEditingController date3 = TextEditingController();
 
   List<Map<String, dynamic>> _allVehicles = [];
-
-  String getEnumValue(Unit? enumValue) {
-    if (enumValue != null) {
-      return enumValue.toString().split('.').last;
-    }
-    return '';
-  }
 
   void registerMaintenance() async {
     ApiResponse response = await register(
       title.text,
       notification.text,
-      period.text,
-      getEnumValue(_selectedUnit),
+      date1.text,
+      date2.text,
+      date3.text,
       _selectedVehicleId.toString(),
     );
     if (response.error == null) {
@@ -53,7 +45,9 @@ class _AddMaintenanceState extends State<AddMaintenance> {
         _loading = false;
         title.text = '';
         notification.text = '';
-        period.text = '';
+        date1.text = '';
+        date2.text = '';
+        date3.text = '';
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -163,155 +157,194 @@ class _AddMaintenanceState extends State<AddMaintenance> {
                 Form(
                   key: formkey,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return 'Title are required';
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: title,
-                          decoration: const InputDecoration(
-                            hintText: 'Enter title',
-                            labelText: 'Title',
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return 'Title is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                            controller: title,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter title',
+                              labelText: 'Title',
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return 'Notification is required';
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: notification,
-                          maxLines: null,
-                          keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            hintText: 'Enter notification',
-                            labelText: 'Notification',
-                            alignLabelWithHint: true,
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextFormField(
-                          validator: (val) {
-                            if (val!.isEmpty) {
-                              return 'Period is required';
-                            } else {
-                              return null;
-                            }
-                          },
-                          controller: period,
-                          decoration: const InputDecoration(
-                            hintText: 'Enter period',
-                            labelText: 'Period',
+                          TextFormField(
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return 'Notification is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                            controller: notification,
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter notification',
+                              labelText: 'Notification',
+                              alignLabelWithHint: true,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        DropdownButtonFormField<Unit>(
-                          value: _selectedUnit,
-                          validator: (val) {
-                            if (val == null) {
-                              return 'Unit is required';
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedUnit = val;
-                            });
-                          },
-                          items: Unit.values.map((type) {
-                            return DropdownMenuItem<Unit>(
-                              value: type,
-                              child: Text(type.toString().split('.').last),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            hintText: 'Unit:',
-                            labelText: 'Unit',
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        DropdownButtonFormField<int>(
-                          value: _selectedVehicleId,
-                          validator: (val) {
-                            if (val == null) {
-                              return 'Vehicle is required';
-                            } else {
-                              return null;
-                            }
-                          },
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedVehicleId = val!;
-                            });
-                          },
-                          items: _allVehicles.map((vehicle) {
-                            return DropdownMenuItem<int>(
-                              value: vehicle['id'],
-                              child: Text(vehicle['name']),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            hintText: 'Vehicle:',
-                            labelText: 'Vehicle',
+                          TextFormField(
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return 'Date 1 is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                            controller: date1,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter first date',
+                              labelText: 'Date 1',
+                            ),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime.now(),
+                              );
+                              if (pickedDate != null) {
+                                date1.text = pickedDate.toString();
+                              }
+                            },
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return 'Date 2 is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                            controller: date2,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter second date',
+                              labelText: 'Date 2',
+                            ),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime.now(),
+                              );
+                              if (pickedDate != null) {
+                                date2.text = pickedDate.toString();
+                              }
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextFormField(
+                            validator: (val) {
+                              if (val!.isEmpty) {
+                                return 'Date 3 is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                            controller: date3,
+                            decoration: const InputDecoration(
+                              hintText: 'Enter third date',
+                              labelText: 'Date 3',
+                            ),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2000),
+                                lastDate: DateTime.now(),
+                              );
+                              if (pickedDate != null) {
+                                date3.text = pickedDate.toString();
+                              }
+                            },
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          DropdownButtonFormField<int>(
+                            value: _selectedVehicleId,
+                            validator: (val) {
+                              if (val == null) {
+                                return 'Vehicle is required';
+                              } else {
+                                return null;
+                              }
+                            },
+                            onChanged: (val) {
                               setState(() {
-                                _loading = true;
+                                _selectedVehicleId = val!;
                               });
-                              registerMaintenance();
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith(
-                              (states) => primaryColor,
-                            ),
-                            padding: MaterialStateProperty.resolveWith(
-                              (states) =>
-                                  const EdgeInsets.symmetric(vertical: 20),
+                            },
+                            items: _allVehicles.map((vehicle) {
+                              return DropdownMenuItem<int>(
+                                value: vehicle['id'],
+                                child: Text(vehicle['name']),
+                              );
+                            }).toList(),
+                            decoration: const InputDecoration(
+                              hintText: 'Vehicle:',
+                              labelText: 'Vehicle',
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40),
-                            child: (_loading)
-                                ? const CircularProgressIndicator(
-                                    color: Colors.white,
-                                  )
-                                : const Text(
-                                    'Register',
-                                    style: TextStyle(
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              if (formkey.currentState!.validate()) {
+                                setState(() {
+                                  _loading = true;
+                                });
+                                registerMaintenance();
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => primaryColor,
+                              ),
+                              padding: MaterialStateProperty.resolveWith(
+                                (states) =>
+                                    const EdgeInsets.symmetric(vertical: 20),
+                              ),
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 40),
+                              child: (_loading)
+                                  ? const CircularProgressIndicator(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold,
+                                    )
+                                  : const Text(
+                                      'Register',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        ],
+                      )),
                 ),
               ],
             ),

@@ -8,8 +8,9 @@ import 'package:http/http.dart' as http;
 Future<ApiResponse> register(
   String? title,
   String? nofication,
-  String? interval,
-  String? unit,
+  String? date1,
+  String? date2,
+  String? date3,
   String? vehicle,
 ) async {
   ApiResponse apiResponse = ApiResponse();
@@ -21,8 +22,9 @@ Future<ApiResponse> register(
     }, body: {
       'title': title,
       'notification': nofication,
-      'interval': interval,
-      'unit': unit,
+      'date1': date1,
+      'date2': date2,
+      'date3': date3,
       'vehicle_id': vehicle,
     });
     switch (response.statusCode) {

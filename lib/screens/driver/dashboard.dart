@@ -199,51 +199,51 @@ class _DashboardState extends State<Dashboard> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.symmetric(vertical: 20),
-                      //   child: GestureDetector(
-                      //     onTap: () {
-                      //       Navigator.of(context).push(
-                      //         MaterialPageRoute(
-                      //           builder: (BuildContext context) {
-                      //             return const ListReports();
-                      //           },
-                      //         ),
-                      //       );
-                      //     },
-                      //     child: Container(
-                      //       width: 160,
-                      //       decoration: BoxDecoration(
-                      //         color: Colors.blue,
-                      //         borderRadius: BorderRadius.circular(30),
-                      //       ),
-                      //       child: const Padding(
-                      //         padding: EdgeInsets.all(20.0),
-                      //         child: Row(
-                      //           mainAxisAlignment: MainAxisAlignment.start,
-                      //           children: [
-                      //             Icon(
-                      //               Icons.copy,
-                      //               color: Colors.white,
-                      //               size: 40,
-                      //             ),
-                      //             SizedBox(
-                      //               width: 10,
-                      //             ),
-                      //             Text(
-                      //               'Reports',
-                      //               style: TextStyle(
-                      //                 color: Colors.white,
-                      //                 fontSize: 16,
-                      //                 fontWeight: FontWeight.bold,
-                      //               ),
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) {
+                                  return const ListReports();
+                                },
+                              ),
+                            );
+                          },
+                          child: Container(
+                            width: 160,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: const Padding(
+                              padding: EdgeInsets.all(20.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.copy,
+                                    color: Colors.white,
+                                    size: 40,
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    'Reports',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 20),
                         child: GestureDetector(
