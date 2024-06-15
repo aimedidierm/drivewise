@@ -3,6 +3,7 @@
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/models/api_response.dart';
 import 'package:drivewise/screens/components/appbar.dart';
+import 'package:drivewise/screens/driver/journey/map_create.dart';
 import 'package:drivewise/services/journey.dart';
 import 'package:flutter/material.dart';
 
@@ -155,6 +156,42 @@ class _AddJourneyState extends State<AddJourney> {
                       hintText: 'Enter load',
                       labelText: 'Load',
                     ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return const MapCreate();
+                              },
+                            ),
+                          );
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith(
+                            (states) => primaryColor,
+                          ),
+                          padding: MaterialStateProperty.resolveWith(
+                            (states) =>
+                                const EdgeInsets.symmetric(vertical: 10),
+                          ),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 60),
+                          child: Text(
+                            'Map',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 40),
                   TextButton(
