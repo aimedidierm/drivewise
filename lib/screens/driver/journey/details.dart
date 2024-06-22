@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:drivewise/constants.dart';
 import 'package:drivewise/screens/components/appbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JourneyDetails extends StatefulWidget {
   final String location, destination, distance;
@@ -98,13 +99,44 @@ class _JourneyDetailsState extends State<JourneyDetails> {
             const SizedBox(
               height: 20,
             ),
-            // Image.asset(
-            // 'assets/images/map2.png',
-            // height: 600,
-            // )
+            TextButton(
+              onPressed: () async {
+                final locationText = widget.location;
+                final destinationText = widget.destination;
+                final url =
+                    'https://www.google.com/maps/dir/?api=1&origin=${Uri.encodeComponent(locationText)}&destination=${Uri.encodeComponent(destinationText)}&travelmode=driving';
+                _launchURL(url);
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith(
+                  (states) => primaryColor,
+                ),
+                padding: MaterialStateProperty.resolveWith(
+                  (states) => const EdgeInsets.symmetric(vertical: 10),
+                ),
+              ),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 60),
+                child: Text(
+                  'Start',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  void _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

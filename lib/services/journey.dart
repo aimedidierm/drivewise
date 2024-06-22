@@ -9,6 +9,7 @@ Future<ApiResponse> register(
   String? location,
   String? load,
   String? destination,
+  String? distance,
 ) async {
   ApiResponse apiResponse = ApiResponse();
   try {
@@ -20,7 +21,7 @@ Future<ApiResponse> register(
       'location': location,
       'destination': destination,
       'load': load,
-      'distance': '0'
+      'distance': distance
     });
     switch (response.statusCode) {
       case 200:
