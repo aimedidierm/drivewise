@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class MaintenanceDetails extends StatefulWidget {
   final String name, description, unit, interval, vehicle;
+  final String? next;
   const MaintenanceDetails({
     Key? key,
     required this.name,
@@ -11,6 +12,7 @@ class MaintenanceDetails extends StatefulWidget {
     required this.unit,
     required this.interval,
     required this.vehicle,
+    this.next,
   }) : super(key: key);
 
   @override
@@ -137,6 +139,26 @@ class _MaintenanceDetailsState extends State<MaintenanceDetails> {
                 ),
               ],
             ),
+            const SizedBox(
+              height: 20,
+            ),
+            (widget.next != null)
+                ? Row(
+                    children: [
+                      const Text(
+                        'Next: ',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      Text(
+                        widget.next ?? '',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

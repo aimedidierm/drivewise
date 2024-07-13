@@ -90,16 +90,18 @@ class _ListMaintenanceState extends State<ListMaintenance> {
                                   MaterialPageRoute(
                                     builder: (BuildContext context) {
                                       return MaintenanceDetails(
-                                        name: _allMaintenances[index]['title'],
-                                        description: _allMaintenances[index]
-                                            ['notification'],
-                                        unit: _allMaintenances[index]['unit'],
-                                        interval: _allMaintenances[index]
-                                                ['interval']
-                                            .toString(),
-                                        vehicle: _allMaintenances[index]
-                                            ['vehicle']['plate'],
-                                      );
+                                          name: _allMaintenances[index]
+                                              ['title'],
+                                          description: _allMaintenances[index]
+                                              ['notification'],
+                                          unit: _allMaintenances[index]['unit'],
+                                          interval: _allMaintenances[index]
+                                                  ['interval']
+                                              .toString(),
+                                          vehicle: _allMaintenances[index]
+                                              ['vehicle']['plate'],
+                                          next: _allMaintenances[index]
+                                              ['next_time']);
                                     },
                                   ),
                                 );
@@ -111,6 +113,13 @@ class _ListMaintenanceState extends State<ListMaintenance> {
                                       'Title: ${_allMaintenances[index]['title']}'),
                                   Text(
                                       'Period: Every ${_allMaintenances[index]['interval']} ${_allMaintenances[index]['unit']}'),
+                                  (_allMaintenances[index]['next_time'] != null)
+                                      ? Text(
+                                          'Next: ${_allMaintenances[index]['next_time']}',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      : const SizedBox()
                                 ],
                               ),
                             ),

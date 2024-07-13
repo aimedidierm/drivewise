@@ -45,7 +45,7 @@ class _AddIssueState extends State<AddIssue> {
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Issue created'),
+          content: Text('Issue reported'),
         ),
       );
     } else {
