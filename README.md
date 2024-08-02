@@ -4,9 +4,7 @@ Drivewise is a sophisticated route optimization mobile app designed to streamlin
 
 ## Demo
 
-
-Uploading Video.mp4…
-
+https://github.com/user-attachments/assets/358d1960-47f3-44bb-b6ca-c93bb353d92c
 
 ## Getting Started
 
